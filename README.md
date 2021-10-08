@@ -1,1 +1,1 @@
-# CS428_Project1
+Setting up a UDP connection between a client and server
