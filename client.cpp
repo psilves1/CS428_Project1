@@ -44,25 +44,26 @@ int main()
 	//for loop to call the 10 pings
 	for (int i = 0; i < 10; i++)
 	{
+		//time used for printing net time
 		auto startTime = std::chrono::high_resolution_clock::now();
 
+		//time used for checking if we've gone over 1 sec
 		time_t start, end;
 		start = time(NULL);
 
-		//Receive the client packet along with the address it is coming from
+		//send message to server
 		n = sendto(sockfd, (const char *)buffer, strlen(buffer),
 				   MSG_CONFIRM, (const struct sockaddr *)&servaddr, sizeof(servaddr));
 
+		//recieve message from server
 		n = recvfrom(sockfd, (char *)buffer, sizeof(buffer),
 					 MSG_WAITALL, (struct sockaddr *)&servaddr, &len);
 
+		//time used for checking if we've gone over 1 sec
 		end = time(NULL);
 
+		//time used for printing
 		auto endTime = std::chrono::high_resolution_clock::now();
-
-		//std::cout << "n = " << n << std::endl;
-
-		//std::cout << difftime(end, start) << std::endl;
 
 		std::cout << i + 1 << ") ";
 
@@ -73,8 +74,10 @@ int main()
 			continue;
 		} 
 
+		//subtracts end - start and puts timeElapsed into nanoseconds
 		auto timeElapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime).count();
 
+		//prints RTT in nanoseconds
 		std::cout << "RTT = " << timeElapsed << " ns" << std::endl;
 	}
 
